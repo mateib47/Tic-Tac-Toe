@@ -19,7 +19,6 @@ public abstract class Player {
 
     public void makeMove(Board board){
         int choice = determineMove(board);
-        System.out.println("choice is "+choice);
         board.setField(choice, getSymbol());
     }
 }

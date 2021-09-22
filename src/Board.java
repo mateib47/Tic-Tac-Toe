@@ -5,6 +5,7 @@ public class Board {
     private static final String LINE = NUMBERING[1];
     private static final String DELIM = "     ";
     private Symbol[] fields;
+    private Symbol winner;
 
     public Board() {
         this.fields = new Symbol[SIZE*SIZE];
@@ -41,5 +42,71 @@ public class Board {
     }
     public void setField(int i, Symbol s) {
         this.fields[i] = s;
+    }
+
+    public boolean checkGameOver() {
+        if (isFull() || hasWinner()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private boolean hasWinner() {
+        return this.isWinner(Symbol.O) || this.isWinner(Symbol.X);
+    }
+
+    private boolean isWinner(Symbol s) {
+        if(this.row(s) || this.column(s)){
+            winner = s;
+            return true;
+        }
+        return false;
+    }// TODO: 22/09/2021 implement diagonal check
+
+//    private boolean diagonal(Symbol s) {
+//
+//    }
+    private boolean row(Symbol s) {
+        int counter = 0;
+        for(int i = 0; i < SIZE; i++){
+            for(int j = 0; j < SIZE; j++) {
+                if (this.fields[index(i,j)].equals(s))
+                    counter++;
+            }
+            if(counter == SIZE){
+                return true;
+            }else{
+                counter = 0;
+            }
+        }
+        return false;
+    }
+    private boolean column(Symbol s) {
+        int counter = 0;
+        for(int i = 0; i < SIZE; i++){
+            for(int j = 0; j < SIZE; j++) {
+                if (this.fields[index(j,i)].equals(s))
+                    counter++;
+            }
+            if(counter == SIZE){
+                return true;
+            }else{
+                counter = 0;
+            }
+        }
+        return false;
+    }
+
+    private boolean isFull() {
+        for(int i = 0; i < SIZE*SIZE; i++){
+            if(this.fields[i].equals(Symbol.E))
+                return false;
+        }
+        return true;
+    }
+
+    public Symbol getWinnerSymbol() {
+        return winner;
     }
 }

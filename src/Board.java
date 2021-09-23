@@ -57,16 +57,32 @@ public class Board {
     }
 
     private boolean isWinner(Symbol s) {
-        if(this.row(s) || this.column(s)){
+        if(this.row(s) || this.column(s) || this.diagonal(s)){
             winner = s;
             return true;
         }
         return false;
-    }// TODO: 22/09/2021 implement diagonal check
-
-//    private boolean diagonal(Symbol s) {
-//
-//    }
+    }
+    private boolean diagonal(Symbol s) {
+        int counter = 0;
+        for(int i=0; i < SIZE;i++){
+            if(this.fields[index(i,i)].equals(s))
+                counter++;
+        }
+        if(counter == SIZE){
+            return true;
+        }else{
+            counter = 0;
+        }
+        for(int i=0; i < SIZE;i++){
+            if(this.fields[index(i,SIZE - i - 1)].equals(s))
+                counter++;
+        }
+        if(counter == SIZE){
+            return true;
+        }
+        return false;
+    }
     private boolean row(Symbol s) {
         int counter = 0;
         for(int i = 0; i < SIZE; i++){
@@ -108,5 +124,13 @@ public class Board {
 
     public Symbol getWinnerSymbol() {
         return winner;
+    }
+
+    public boolean isField(int choice) {
+        return 0 <= choice && choice< SIZE*SIZE;
+    }
+
+    public boolean isEmpty(int choice) {
+        return fields[choice].equals(Symbol.E);
     }
 }

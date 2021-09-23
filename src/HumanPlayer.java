@@ -10,7 +10,12 @@ public class HumanPlayer extends Player {
         System.out.println(getName() + " (" + getSymbol().toString() + ")" + " ,what is your move? (0-9)");
         Scanner scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
-        //check if it is valid
+        boolean valid = board.isField(choice) && board.isEmpty(choice);
+        while(!valid){
+            System.out.println("Error, field "+choice+" is not valid");
+            choice = scanner.nextInt();
+            valid = board.isField(choice) && board.isEmpty(choice);
+        }
         return choice;
     }
 }

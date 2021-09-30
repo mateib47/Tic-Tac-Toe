@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board {
     public static final int SIZE = 3;
     private static final String[] NUMBERING = {" 0 | 1 | 2 ", "---+---+---",
@@ -132,5 +135,15 @@ public class Board {
 
     public boolean isEmpty(int choice) {
         return fields[choice].equals(Symbol.E);
+    }
+
+    public List<Integer> getEmptyFields(){
+        List<Integer> fields = new ArrayList<>();
+        for(int i=0; i < SIZE*SIZE; i++){
+            if(isEmpty(i)){
+                fields.add(i);
+            }
+        }
+        return fields;
     }
 }

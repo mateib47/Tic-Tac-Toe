@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.Random;
+
 public class NaiveStrategy implements Strategy{
     @Override
     public String getName() {
@@ -6,7 +9,9 @@ public class NaiveStrategy implements Strategy{
 
     @Override
     public int determineMove(Board board, Symbol symbol) {
-        //todo get all empty fields and choose one randomly
-        return 0;
+        Random r = new Random();
+        List<Integer> emptyFields = board.getEmptyFields();
+        int random = r.nextInt(emptyFields.size());
+        return emptyFields.get(random);
     }
 }

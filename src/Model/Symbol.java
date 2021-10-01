@@ -1,7 +1,9 @@
+package Model;
+
 /**
  * Represents the types of symbols that are
- * used in this TicTacToe implementation
- * Symbol.X, Symbol.O,Symbol.EMPTY
+ * used in this View.TicTacToe implementation
+ * Model.Symbol.X, Model.Symbol.O,Model.Symbol.EMPTY
  */
 
 

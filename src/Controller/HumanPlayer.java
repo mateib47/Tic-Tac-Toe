@@ -1,3 +1,8 @@
+package Controller;
+
+import Model.Board;
+import Model.Symbol;
+
 import java.util.Scanner;
 
 public class HumanPlayer extends Player {

@@ -1,3 +1,5 @@
+package Model;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class Board {
         for(int i = 0; i < SIZE*SIZE; i++){
             this.fields[i] = Symbol.E;
         }
+        winner = null;
     }
     public String toString() {
         String s = "";
@@ -145,5 +148,12 @@ public class Board {
             }
         }
         return fields;
+    }
+    public Board deepCopy(){
+        Board copy = new Board();
+        for(int i = 0; i < SIZE*SIZE; i++){
+            copy.fields[i] = this.fields[i];
+        }
+        return copy;
     }
 }

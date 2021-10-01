@@ -1,3 +1,8 @@
+package Controller;
+
+import Model.Board;
+import Model.Symbol;
+
 public abstract class Player {
     private String name;
     private Symbol symbol;

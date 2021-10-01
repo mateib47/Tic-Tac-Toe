@@ -1,3 +1,7 @@
+package Controller;
+
+import Model.Board;
+
 import java.util.Scanner;
 
 public class Game {
@@ -24,11 +28,11 @@ public class Game {
         }
     }
     private void result(){
-        System.out.println("Game finished!");
+        System.out.println("Controller.Game finished!");
         if(players[0].getSymbol().equals(board.getWinnerSymbol())){
-            System.out.println("Player " + players[0].getName() + " won!");
+            System.out.println("Controller.Player " + players[0].getName() + " won!");
         }else if(players[1].getSymbol().equals(board.getWinnerSymbol())){
-                System.out.println("Player " + players[1].getName() + " won!");
+                System.out.println("Controller.Player " + players[1].getName() + " won!");
         }else{
             System.out.println("There was a draw!");
         }
@@ -56,9 +60,16 @@ public class Game {
 
     public void play() {
         while (!board.checkGameOver()){
-            System.out.println(board.toString());
+            printGameStatus(board);
             players[current].makeMove(board);
             current = (current == 0) ? 1 : 0;
         }
+        printGameStatus(board);
+    }
+    public void printGameStatus(Board board){
+        System.out.println(board.toString());
+        System.out.println();
+        System.out.println("===========     ===========");
+        System.out.println();
     }
 }

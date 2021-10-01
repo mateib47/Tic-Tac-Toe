@@ -1,4 +1,9 @@
-public class ComputerPlayer extends Player{
+package Controller;
+
+import Model.Board;
+import Model.Symbol;
+
+public class ComputerPlayer extends Player {
 
     Strategy strategy;
 

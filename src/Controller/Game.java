@@ -28,11 +28,11 @@ public class Game {
         }
     }
     private void result(){
-        System.out.println("Controller.Game finished!");
+        System.out.println("Game finished!");
         if(players[0].getSymbol().equals(board.getWinnerSymbol())){
-            System.out.println("Controller.Player " + players[0].getName() + " won!");
+            System.out.println("Player " + players[0].getName() + " won!");
         }else if(players[1].getSymbol().equals(board.getWinnerSymbol())){
-                System.out.println("Controller.Player " + players[1].getName() + " won!");
+                System.out.println("Player " + players[1].getName() + " won!");
         }else{
             System.out.println("There was a draw!");
         }

@@ -1,9 +1,14 @@
 package View;
 
+import Controller.*;
+import Model.Symbol;
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class GUI implements ActionListener {
 
@@ -11,7 +16,7 @@ public class GUI implements ActionListener {
     private JPanel panel;
     private JPanel menu;
     private JLabel title;
-    private JButton welcomeButton;
+    private JButton welcomeButton, submit;
     private JLabel player1;
     private JRadioButton human1;
     private JRadioButton computer1;
@@ -20,8 +25,12 @@ public class GUI implements ActionListener {
     private JRadioButton human2;
     private JRadioButton computer2;
     private ButtonGroup player2gp;
-    private JLabel name1;
-    private JTextField tname1;
+    private JLabel name1, name2;
+    private JTextField tname1, tname2;
+    private JLabel difficulty1, difficulty2;
+    private JRadioButton easy1, medium1, hard1,easy2, medium2, hard2;
+    private ButtonGroup difficulty1gp, difficulty2gp;
+
 
 
     public GUI() {
@@ -61,18 +70,75 @@ public class GUI implements ActionListener {
             resetFrame();
             menu = new JPanel();
             menu.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
-            menu.setLayout(new GridLayout(3, 3));
+            menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 
             createPlayerType(1);
             createPlayerType(2);
+            submit = new JButton("Submit");
+            submit.addActionListener(this);
+            menu.add(submit);
+
 
             frame.setContentPane(menu);
-            SwingUtilities.updateComponentTreeUI(frame);
         } else if(e.getSource() == human1){
             name1.setVisible(true);
             tname1.setVisible(true);
-            System.out.println("ca");
+            difficulty1.setVisible(false);
+            easy1.setVisible(false);
+            medium1.setVisible(false);
+            hard1.setVisible(false);
+        } else if(e.getSource() == computer1){
+            name1.setVisible(false);
+            tname1.setVisible(false);
+            difficulty1.setVisible(true);
+            easy1.setVisible(true);
+            medium1.setVisible(true);
+            hard1.setVisible(true);
+        }
+        else if(e.getSource() == human2){
+            name2.setVisible(true);
+            tname2.setVisible(true);
+            difficulty2.setVisible(false);
+            easy2.setVisible(false);
+            medium2.setVisible(false);
+            hard2.setVisible(false);
 
+        } else if(e.getSource() == computer2){
+            name2.setVisible(false);
+            tname2.setVisible(false);
+            difficulty2.setVisible(true);
+            easy2.setVisible(true);
+            medium2.setVisible(true);
+            hard2.setVisible(true);
+        }else if(e.getSource() == submit){//do smth when the input is empty
+            Player player1;
+            Player player2;
+
+            if(human1.isSelected()){
+                player1 = new HumanPlayer(tname1.getText(), Symbol.X);
+            }else{
+                if(easy1.isSelected()){
+                    player1 = new ComputerPlayer(Symbol.X);
+                }else if(medium1.isSelected()){
+                    player1 = new ComputerPlayer(new SmartStrategy(), Symbol.X);
+                }else{
+                    player1 = new ComputerPlayer(new VerySmartStrategy(), Symbol.X);
+                }
+            }
+            if(human2.isSelected()){
+                player2 = new HumanPlayer(tname2.getText(), Symbol.O);
+            }else{
+                if(easy2.isSelected()){
+                    player2 = new ComputerPlayer(Symbol.O);
+                }else if(medium2.isSelected()){
+                    player2 = new ComputerPlayer(new SmartStrategy(), Symbol.O);
+                }else{
+                    player2 = new ComputerPlayer(new VerySmartStrategy(), Symbol.O);
+                }
+            }
+            Game game= new Game(player1, player2);
+            game.start();
+            resetFrame();
         }
         SwingUtilities.updateComponentTreeUI(frame);
 
@@ -90,19 +156,48 @@ public class GUI implements ActionListener {
             player1gp.add(computer1);
 
             name1 = new JLabel("Name");
-            name1.setFont(new Font("Arial", Font.PLAIN, 20));
-            tname1 = new JTextField();
-            tname1.setFont(new Font("Arial", Font.PLAIN, 15));
+            name1.setBorder(new EmptyBorder (0, 30, 0, 0));
+            tname1 = new JTextField(80);
+            tname1.setPreferredSize(new Dimension(60,20));
+            tname1.setMaximumSize( tname1.getPreferredSize() );
+
+            difficulty1 = new JLabel("Select Difficulty");
+            difficulty1.setBorder(new EmptyBorder (0, 30, 0, 0));
+            easy1 = new JRadioButton("Easy");
+            easy1.setSize(75, 20);
+            medium1 = new JRadioButton("Medium");
+            medium1.setSize(75, 20);
+            hard1 = new JRadioButton("Hard");
+            hard1.setSize(75, 20);
+            difficulty1gp = new ButtonGroup();
+            difficulty1gp.add(easy1);
+            difficulty1gp.add(medium1);
+            difficulty1gp.add(hard1);
+            easy1.setBorder(new EmptyBorder (0, 50, 0, 0));
+            hard1.setBorder(new EmptyBorder (0, 50, 0, 0));
+            medium1.setBorder(new EmptyBorder (0, 50, 0, 0));
+            difficulty1.setVisible(false);
+            easy1.setVisible(false);
+            medium1.setVisible(false);
+            hard1.setVisible(false);
+
+
             name1.setVisible(false);
             tname1.setVisible(false);
 
             human1.addActionListener(this);
+            computer1.addActionListener(this);
+
 
             menu.add(player1);
             menu.add(human1);
             menu.add(computer1);
             menu.add(name1);
             menu.add(tname1);
+            menu.add(difficulty1);
+            menu.add(easy1);
+            menu.add(medium1);
+            menu.add(hard1);
             menu.add(new JLabel(""));
 
 
@@ -115,9 +210,52 @@ public class GUI implements ActionListener {
             player2gp = new ButtonGroup();
             player2gp.add(human2);
             player2gp.add(computer2);
+
+            name2 = new JLabel("Name");
+            name2.setBorder(new EmptyBorder (0, 30, 0, 0));
+            tname2 = new JTextField(80);
+            tname2.setPreferredSize(new Dimension(60,20));
+            tname2.setMaximumSize( tname2.getPreferredSize() );
+
+            difficulty2 = new JLabel("Select Difficulty");
+            difficulty2.setBorder(new EmptyBorder (0, 30, 0, 0));
+            easy2 = new JRadioButton("Easy");
+            easy2.setSize(75, 20);
+            medium2 = new JRadioButton("Medium");
+            medium2.setSize(75, 20);
+            hard2 = new JRadioButton("Hard");
+            hard2.setSize(75, 20);
+            difficulty2gp = new ButtonGroup();
+            difficulty2gp.add(easy2);
+            difficulty2gp.add(medium2);
+            difficulty2gp.add(hard2);
+            easy2.setBorder(new EmptyBorder (0, 50, 0, 0));
+            hard2.setBorder(new EmptyBorder (0, 50, 0, 0));
+            medium2.setBorder(new EmptyBorder (0, 50, 0, 0));
+            difficulty2.setVisible(false);
+            easy2.setVisible(false);
+            medium2.setVisible(false);
+            hard2.setVisible(false);
+
+
+            name2.setVisible(false);
+            tname2.setVisible(false);
+
+            human2.addActionListener(this);
+            computer2.addActionListener(this);
+
+
             menu.add(player2);
             menu.add(human2);
             menu.add(computer2);
+            menu.add(name2);
+            menu.add(tname2);
+            menu.add(difficulty2);
+            menu.add(easy2);
+            menu.add(medium2);
+            menu.add(hard2);
+            menu.add(new JLabel(""));
+
         }
 
     }

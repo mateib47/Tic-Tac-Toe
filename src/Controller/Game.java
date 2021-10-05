@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Board;
+import View.GameView;
 
 import java.util.Scanner;
 
@@ -8,10 +9,12 @@ public class Game {
     private Board board;
     private Player[] players;
     private int current;
+    private GameView view;
 
-    public Game(Player p0, Player p1){
+    public Game(Player p0, Player p1, GameView view){
         this.board = new Board();
         players = new Player[2];
+        this.view = view;
         players[0] = p0;
         players[1] = p1;
         current = 0;
@@ -28,19 +31,20 @@ public class Game {
         }
     }
     private void result(){
-        System.out.println("Game finished!");
+        String result = "Game finished!\n";
         if(players[0].getSymbol().equals(board.getWinnerSymbol())){
-            System.out.println("Player " + players[0].getName() + " won!");
+            result += "Player " + players[0].getName() + " won!";
         }else if(players[1].getSymbol().equals(board.getWinnerSymbol())){
-                System.out.println("Player " + players[1].getName() + " won!");
+            result += "Player " + players[1].getName() + " won!";
         }else{
-            System.out.println("There was a draw!");
+            result += "There was a draw!";
         }
+        view.print(result);
     }
 
     private  boolean again(){
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Play again? (y/n)");
+        view.print("Play again? (y/n)");
         while(true){
             String resp = scanner.nextLine();
             if(resp.equals("y")){
@@ -48,7 +52,7 @@ public class Game {
             }else if(resp.equals("n")){
                 return false;
             }else{
-                System.out.println("Play again? Type 'y' for yes or 'n' for no");
+                view.print("Play again? Type 'y' for yes or 'n' for no");
             }
         }
     }
@@ -67,9 +71,9 @@ public class Game {
         printGameStatus(board);
     }
     public void printGameStatus(Board board){
-        System.out.println(board.toString());
-        System.out.println();
-        System.out.println("===========     ===========");
-        System.out.println();
+        view.print(board.toString());
+        view.print();
+        view.print("===========     ===========");
+        view.print();
     }
 }

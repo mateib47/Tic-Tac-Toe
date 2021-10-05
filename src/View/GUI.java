@@ -14,7 +14,7 @@ public class GUI implements ActionListener {
 
     private JFrame frame;
     private JPanel panel;
-    private JPanel menu;
+    private JPanel menu, game;
     private JLabel title;
     private JButton welcomeButton, submit;
     private JLabel player1;
@@ -30,10 +30,18 @@ public class GUI implements ActionListener {
     private JLabel difficulty1, difficulty2;
     private JRadioButton easy1, medium1, hard1,easy2, medium2, hard2;
     private ButtonGroup difficulty1gp, difficulty2gp;
+    private JTextArea consoleView;
+    private GameView view;
+    public Game gameRun;
 
 
 
     public GUI() {
+        consoleView = new JTextArea(50,50);
+        consoleView.setPreferredSize(new Dimension(200,200));
+        consoleView.setMaximumSize( consoleView.getPreferredSize() );
+        view = new GameView(consoleView);
+
         frame = new JFrame();
         panel = new JPanel();
 
@@ -61,15 +69,22 @@ public class GUI implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new GUI();
+        GUI gui = new GUI();
+        //gui.start();
     }
 
+    public void start(){
+        while(true){
+            if(gameRun !=null)         gameRun.start();
+
+        }
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == welcomeButton){
             resetFrame();
             menu = new JPanel();
-            menu.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
+            menu.setBorder(BorderFactory.createEmptyBorder(50, 50, 100, 100));
             menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
 
             createPlayerType(1);
@@ -115,7 +130,7 @@ public class GUI implements ActionListener {
             Player player2;
 
             if(human1.isSelected()){
-                player1 = new HumanPlayer(tname1.getText(), Symbol.X);
+                player1 = new HumanPlayer(tname1.getText(), Symbol.X, view);
             }else{
                 if(easy1.isSelected()){
                     player1 = new ComputerPlayer(Symbol.X);
@@ -126,7 +141,7 @@ public class GUI implements ActionListener {
                 }
             }
             if(human2.isSelected()){
-                player2 = new HumanPlayer(tname2.getText(), Symbol.O);
+                player2 = new HumanPlayer(tname2.getText(), Symbol.O, view);
             }else{
                 if(easy2.isSelected()){
                     player2 = new ComputerPlayer(Symbol.O);
@@ -136,9 +151,17 @@ public class GUI implements ActionListener {
                     player2 = new ComputerPlayer(new VerySmartStrategy(), Symbol.O);
                 }
             }
-            Game game= new Game(player1, player2);
-            game.start();
             resetFrame();
+            SwingUtilities.updateComponentTreeUI(frame);
+            game = new JPanel();
+            game.setBorder(BorderFactory.createEmptyBorder(50, 50, 100, 100));
+            game.setLayout(new BoxLayout(game, BoxLayout.Y_AXIS));
+            game.add(consoleView);
+            frame.setContentPane(game);
+            // FIXME: 05/10/2021 smth not working
+            gameRun = new Game(player1, player2, view);
+            //gameRun.start();
+
         }
         SwingUtilities.updateComponentTreeUI(frame);
 
